@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>给我的宝宝</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('teacher.jpg') no-repeat center center fixed;
+            background-size: contain;
+            font-family: 'KaiTi', cursive;
+            color: #fff;
+            overflow: hidden;
+        }
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-size: 60px;
+            margin: 0;
+            opacity: 0;
+            animation: floatIn 2s forwards;
+        }
+        p {
+            font-size: 24px;
+            margin: 20px;
+            opacity: 0;
+            animation: floatIn 2s forwards;
+        }
+        /* 为每个段落添加不同的动画延迟 */
+        p:nth-of-type(1) {
+            animation-delay: 1s;
+        }
+        p:nth-of-type(2) {
+            animation-delay: 2s;
+        }
+        p:nth-of-type(3) {
+            animation-delay: 3s;
+        }
+        .heart {
+            font-size: 100px;
+            animation: beat 1s infinite alternate;
+            opacity: 0;
+            animation: floatIn 2s forwards;
+            animation-delay: 0.5s;
+        }
+        @keyframes beat {
+            to { transform: scale(1.2); }
+        }
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* 飘落的图片 */
+        .image-fall {
+            position: fixed;
+            top: -10%;
+            width: 50px; /* 调整图片尺寸 */
+            height: 50px;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        /* 点击出现的爱心 */
+        .click-heart {
+            position: absolute;
+            font-size: 24px;
+            color: red;
+            animation: rise 1s forwards;
+        }
+        @keyframes rise {
+            to {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+        /* 烟花效果 */
+        .firework {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 5px;
+            height: 5px;
+            background: transparent;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+            animation: firework 2s ease-out infinite;
+        }
+        @keyframes firework {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(100);
+                opacity: 0;
+            }
+        }
+        /* 飘动的气球 */
+        .balloon {
+            position: absolute;
+            bottom: -150px;
+            width: 100px;
+            height: 150px;
+            background: radial-gradient(circle at 50% 50%, red, darkred);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% {
+                bottom: -150px;
+                transform: translateX(0);
+            }
+            50% {
+                bottom: 110vh;
+                transform: translateX(-50px);
+            }
+            100% {
+                bottom: -150px;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="overlay">
+    <h1>亲爱的 [宝宝]</h1>
+    <div class="heart">❤️</div>
+    <p>中秋快乐,无忧无虑。</p>
+    <p>快快乐乐,长长久久</p>
+    <p>有点喜欢你哦</p>
+</div>
+<!-- 添加飘落的图片 -->
+<div id="image-container"></div>
+<!-- 添加烟花效果 -->
+<div id="firework-container"></div>
+<!-- 添加飘动的气球 -->
+<div id="balloon-container"></div>
+
+<!-- 添加背景音乐 -->
+<audio autoplay loop>
+    <source src="your-music-file.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    // 指定要飘落的图片列表
+    const images = [
+        'teacher.jpg',
+        'teacher.jpg',
+        'teacher.jpg'
+        // 在这里添加更多的图片路径
+    ];
+
+    // 创建飘落的图片效果
+    function createFallingImage() {
+        const image = document.createElement('img');
+        image.classList.add('image-fall');
+        image.src = images[Math.floor(Math.random() * images.length)];
+        image.style.left = Math.random() * 100 + 'vw';
+        image.style.animationDuration = Math.random() * 5 + 5 + 's';
+        document.body.appendChild(image);
+
+        setTimeout(() => {
+            image.remove();
+        }, 10000);
+    }
+    setInterval(createFallingImage, 500);
+
+    // 点击出现爱心
+    document.addEventListener('click', function(e) {
+        const heart = document.createElement('div');
+        heart.classList.add('click-heart');
+        heart.style.left = e.pageX - 10 + 'px';
+        heart.style.top = e.pageY - 10 + 'px';
+        heart.innerText = '💖';
+        document.body.appendChild(heart);
+        setTimeout(() => {
+            heart.remove();
+        }, 1000);
+    });
+
+    // 烟花效果
+    function createFirework() {
+        const firework = document.createElement('div');
+        firework.classList.add('firework');
+        firework.style.left = Math.random() * 100 + 'vw';
+        firework.style.top = Math.random() * 100 + 'vh';
+        firework.style.animationDuration = '2s';
+        document.body.appendChild(firework);
+        setTimeout(() => {
+            firework.remove();
+        }, 2000);
+    }
+    setInterval(createFirework, 3000);
+
+    // 飘动的气球效果
+    function createBalloon() {
+        const balloon = document.createElement('div');
+        balloon.classList.add('balloon');
+        balloon.style.left = Math.random() * 100 + 'vw';
+        balloon.style.animationDuration = Math.random() * 5 + 5 + 's';
+        document.body.appendChild(balloon);
+        setTimeout(() => {
+            balloon.remove();
+        }, 10000);
+    }
+    setInterval(createBalloon, 4000);
+</script>
+</body>
+</html>
